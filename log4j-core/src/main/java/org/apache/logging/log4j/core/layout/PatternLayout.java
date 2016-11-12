@@ -102,14 +102,33 @@ public final class PatternLayout extends AbstractStringLayout {
             final PatternSelector patternSelector, final Charset charset, final boolean alwaysWriteExceptions,
             final boolean noConsoleNoAnsi, final String headerPattern, final String footerPattern) {
         super(config, charset,
-                createSerializer(config, replace, headerPattern, null, patternSelector, alwaysWriteExceptions,
-                        noConsoleNoAnsi),
-                createSerializer(config, replace, footerPattern, null, patternSelector, alwaysWriteExceptions,
-                        noConsoleNoAnsi));
+                newSerializerBuilder()
+                        .withConfiguration(config)
+                        .withReplace(replace)
+                        .withPatternSelector(patternSelector)
+                        .withAlwaysWriteExceptions(alwaysWriteExceptions)
+                        .withNoConsoleNoAnsi(noConsoleNoAnsi)
+                        .withPattern(headerPattern)
+                        .build(),
+                newSerializerBuilder()
+                        .withConfiguration(config)
+                        .withReplace(replace)
+                        .withPatternSelector(patternSelector)
+                        .withAlwaysWriteExceptions(alwaysWriteExceptions)
+                        .withNoConsoleNoAnsi(noConsoleNoAnsi)
+                        .withPattern(footerPattern)
+                        .build());
         this.conversionPattern = eventPattern;
         this.patternSelector = patternSelector;
-        this.eventSerializer = createSerializer(config, replace, eventPattern, DEFAULT_CONVERSION_PATTERN,
-                patternSelector, alwaysWriteExceptions, noConsoleNoAnsi);
+        this.eventSerializer = newSerializerBuilder()
+                .withConfiguration(config)
+                .withReplace(replace)
+                .withPatternSelector(patternSelector)
+                .withAlwaysWriteExceptions(alwaysWriteExceptions)
+                .withNoConsoleNoAnsi(noConsoleNoAnsi)
+                .withPattern(eventPattern)
+                .withDefaultPattern(DEFAULT_CONVERSION_PATTERN)
+                .build();
     }
 
     public static SerializerBuilder newSerializerBuilder() {
@@ -573,6 +592,7 @@ public final class PatternLayout extends AbstractStringLayout {
             return this;
         }
 
+        /**
          * @param noConsoleNoAnsi
          *        If {@code "true"} (default is false) and {@link System#console()} is null, do not output ANSI escape codes
          */
