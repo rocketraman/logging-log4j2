@@ -113,6 +113,10 @@ public class MarkerPatternSelector implements PatternSelector {
     private static Logger LOGGER = StatusLogger.getLogger();
 
 
+    /**
+     * @deprecated Use {@link #newBuilder()} instead. This will be private in a future version.
+     */
+    @Deprecated
     public MarkerPatternSelector(final PatternMatch[] properties, final String defaultPattern,
                                  final boolean alwaysWriteExceptions, final boolean noConsoleNoAnsi,
                                  final Configuration config) {

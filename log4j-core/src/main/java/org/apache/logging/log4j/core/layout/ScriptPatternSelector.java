@@ -137,6 +137,10 @@ public class ScriptPatternSelector implements PatternSelector {
     private final Configuration configuration;
 
 
+    /**
+     * @deprecated Use {@link #newBuilder()} instead. This will be private in a future version.
+     */
+    @Deprecated
     public ScriptPatternSelector(final AbstractScript script, final PatternMatch[] properties, final String defaultPattern,
                                  final boolean alwaysWriteExceptions, final boolean noConsoleNoAnsi,
                                  final Configuration config) {

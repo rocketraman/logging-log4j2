@@ -252,8 +252,10 @@ public final class PatternLayout extends AbstractStringLayout {
      * @param footerPattern
      *        The footer to place at the bottom of the document, once.
      * @return The PatternLayout.
+     * @deprecated Use {@link #newBuilder()} instead. This will be private in a future version.
      */
     @PluginFactory
+    @Deprecated
     public static PatternLayout createLayout(
             @PluginAttribute(value = "pattern", defaultString = DEFAULT_CONVERSION_PATTERN) final String pattern,
             @PluginElement("PatternSelector") final PatternSelector patternSelector,
