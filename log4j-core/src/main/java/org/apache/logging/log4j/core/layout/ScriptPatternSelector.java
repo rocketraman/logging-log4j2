@@ -45,7 +45,7 @@ import org.apache.logging.log4j.status.StatusLogger;
 public class ScriptPatternSelector implements PatternSelector {
 
     /**
-     * Custom ScriptPatternSelector builder. Use the {@link ScriptPatternSelector.#newBuilder() builder factory method} to create this.
+     * Custom ScriptPatternSelector builder. Use the {@link #newBuilder() builder factory method} to create this.
      */
     public static class Builder implements org.apache.logging.log4j.core.util.Builder<ScriptPatternSelector> {
 
@@ -61,10 +61,13 @@ public class ScriptPatternSelector implements PatternSelector {
         @PluginBuilderAttribute("alwaysWriteExceptions") 
         private boolean alwaysWriteExceptions = true;
         
-        @PluginBuilderAttribute("noConsoleNoAnsi") 
-        private boolean noConsoleNoAnsi;
+        @PluginBuilderAttribute("disableAnsi")
+        private boolean disableAnsi;
         
-        @PluginConfiguration 
+        @PluginBuilderAttribute("noConsoleNoAnsi")
+        private boolean noConsoleNoAnsi;
+
+        @PluginConfiguration
         private Configuration configuration;
 
         private Builder() {
@@ -90,7 +93,8 @@ public class ScriptPatternSelector implements PatternSelector {
                 LOGGER.warn("No marker patterns were provided");
                 return null;
             }
-            return new ScriptPatternSelector(script, properties, defaultPattern, alwaysWriteExceptions, noConsoleNoAnsi, configuration);
+            return new ScriptPatternSelector(script, properties, defaultPattern, alwaysWriteExceptions, disableAnsi,
+                    noConsoleNoAnsi, configuration);
         }
 
         public Builder withScript(final AbstractScript script) {
@@ -110,6 +114,11 @@ public class ScriptPatternSelector implements PatternSelector {
 
         public Builder withAlwaysWriteExceptions(final boolean alwaysWriteExceptions) {
             this.alwaysWriteExceptions = alwaysWriteExceptions;
+            return this;
+        }
+
+        public Builder withDisableAnsi(final boolean disableAnsi) {
+            this.disableAnsi = disableAnsi;
             return this;
         }
 
@@ -142,8 +151,8 @@ public class ScriptPatternSelector implements PatternSelector {
      */
     @Deprecated
     public ScriptPatternSelector(final AbstractScript script, final PatternMatch[] properties, final String defaultPattern,
-                                 final boolean alwaysWriteExceptions, final boolean noConsoleNoAnsi,
-                                 final Configuration config) {
+                                 final boolean alwaysWriteExceptions, final boolean disableAnsi,
+                                 final boolean noConsoleNoAnsi, final Configuration config) {
         this.script = script;
         this.configuration = config;
         if (!(script instanceof ScriptRef)) {
@@ -152,7 +161,7 @@ public class ScriptPatternSelector implements PatternSelector {
         final PatternParser parser = PatternLayout.createPatternParser(config);
         for (final PatternMatch property : properties) {
             try {
-                final List<PatternFormatter> list = parser.parse(property.getPattern(), alwaysWriteExceptions, noConsoleNoAnsi);
+                final List<PatternFormatter> list = parser.parse(property.getPattern(), alwaysWriteExceptions, disableAnsi, noConsoleNoAnsi);
                 formatterMap.put(property.getKey(), list.toArray(new PatternFormatter[list.size()]));
                 patternMap.put(property.getKey(), property.getPattern());
             } catch (final RuntimeException ex) {
@@ -160,7 +169,7 @@ public class ScriptPatternSelector implements PatternSelector {
             }
         }
         try {
-            final List<PatternFormatter> list = parser.parse(defaultPattern, alwaysWriteExceptions, noConsoleNoAnsi);
+            final List<PatternFormatter> list = parser.parse(defaultPattern, alwaysWriteExceptions, disableAnsi, noConsoleNoAnsi);
             defaultFormatters = list.toArray(new PatternFormatter[list.size()]);
             this.defaultPattern = defaultPattern;
         } catch (final RuntimeException ex) {
