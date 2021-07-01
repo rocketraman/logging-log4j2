@@ -244,7 +244,7 @@
     <!-- Allow Clirr severity to be overriden by the command-line option -DminSeverity=level -->
     <minSeverity>info</minSeverity>
     <jctoolsVersion>3.3.0</jctoolsVersion>
-    <junitVersion>4.13.1</junitVersion>
+    <junitVersion>4.13.2</junitVersion>
     <junitJupiterVersion>5.7.0</junitJupiterVersion>
     <mockitoVersion>3.9.0</mockitoVersion>
     <byteBuddyVersion>1.11.0</byteBuddyVersion>
