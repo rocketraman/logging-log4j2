@@ -245,7 +245,7 @@
     <minSeverity>info</minSeverity>
     <jctoolsVersion>3.3.0</jctoolsVersion>
     <junitVersion>4.13.1</junitVersion>
-    <junitJupiterVersion>5.7.0</junitJupiterVersion>
+    <junitJupiterVersion>5.7.2</junitJupiterVersion>
     <mockitoVersion>3.9.0</mockitoVersion>
     <byteBuddyVersion>1.11.0</byteBuddyVersion>
     <argLine>-Xms256m -Xmx1024m</argLine>
